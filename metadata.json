@@ -1,0 +1,7 @@
+{
+  "name": "EduPro Manager",
+  "description": "A professional robust educational management system for teachers to track attendance, grades, rubrics, and generate detailed reports.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
