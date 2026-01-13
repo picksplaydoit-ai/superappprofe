@@ -1,6 +1,11 @@
 {
   "name": "EduPro Manager",
-  "description": "A professional robust educational management system for teachers to track attendance, grades, rubrics, and generate detailed reports.",
+  "short_name": "EduPro",
+  "description": "Sistema profesional de gestión educativa para Android.",
+  "theme_color": "#4f46e5",
+  "background_color": "#f8fafc",
+  "display": "standalone",
+  "orientation": "portrait",
   "requestFramePermissions": [
     "camera"
   ]

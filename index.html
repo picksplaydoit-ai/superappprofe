@@ -3,28 +3,57 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>EduPro Manager</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-indigo: #4f46e5;
+        }
         body { 
             font-family: 'Inter', sans-serif; 
-            overscroll-behavior-y: contain; /* Previene el pull-to-refresh del navegador */
-            -webkit-tap-highlight-color: transparent; /* Elimina el recuadro gris al tocar en Android */
+            overscroll-behavior: none; /* Bloquea el pull-to-refresh y el bounce del navegador */
+            -webkit-tap-highlight-color: transparent;
+            user-select: none; /* Previene selección accidental de texto en la UI */
         }
-        .select-none {
-            -webkit-user-select: none;
-            user-select: none;
+        
+        /* Permitir selección solo en inputs */
+        input, textarea, [contenteditable="true"] {
+            user-select: text;
         }
-        /* Optimización de scrollbars para móvil */
+
+        /* Estilo para el scrollbar en Android */
         ::-webkit-scrollbar {
             width: 4px;
-            height: 4px;
         }
         ::-webkit-scrollbar-thumb {
-            background: #e2e8f0;
+            background: #cbd5e1;
             border-radius: 10px;
+        }
+
+        /* Animaciones fluidas para transiciones entre módulos */
+        .page-transition {
+            animation: fadeIn 0.3s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Quitar flechas de inputs numéricos */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        /* Evitar que el zoom automático de iOS/Android al enfocar un input */
+        input[type="text"], input[type="number"], input[type="date"], select, textarea {
+            font-size: 16px !important;
         }
     </style>
 <script type="importmap">
