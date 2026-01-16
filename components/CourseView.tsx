@@ -33,7 +33,7 @@ export const CourseView: React.FC<CourseViewProps> = ({ course, onUpdate, onBack
     { id: 'rubric', label: 'Rúbrica', icon: Settings },
     { id: 'groups', label: 'Equipos', icon: UsersRound },
     { id: 'attendance', label: 'Asistencia', icon: Calendar },
-    { id: 'activities', label: 'Actividades', icon: CheckSquare },
+    { id: 'activities', label: 'Notas', icon: CheckSquare },
     { id: 'reports', label: 'Reportes', icon: FileText },
   ];
 
@@ -42,40 +42,45 @@ export const CourseView: React.FC<CourseViewProps> = ({ course, onUpdate, onBack
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <button 
-            onClick={onBack}
-            className="p-2 hover:bg-slate-200 rounded-lg transition-colors text-slate-600"
-          >
-            <ChevronLeft size={24} />
-          </button>
-          <div>
-            <h1 className="text-2xl font-bold text-slate-800">{course.name}</h1>
-            <p className="text-indigo-600 font-semibold text-sm">Grupo: {course.groupName}</p>
-          </div>
+    <div className="space-y-4 pb-10">
+      <div className="flex items-center gap-4 px-2 py-2">
+        <button 
+          onClick={onBack}
+          className="p-3 bg-white shadow-sm border border-slate-200 rounded-2xl transition-colors text-slate-600 active:scale-90"
+        >
+          <ChevronLeft size={20} />
+        </button>
+        <div>
+          <h1 className="text-xl font-black text-slate-800 leading-none">{course.name}</h1>
+          <p className="text-indigo-600 font-bold text-xs mt-1 uppercase tracking-widest">Grupo: {course.groupName}</p>
         </div>
+      </div>
 
-        <nav className="flex overflow-x-auto pb-2 lg:pb-0 gap-1 lg:bg-white lg:p-1 lg:rounded-xl lg:shadow-sm lg:border lg:border-slate-200 scrollbar-hide">
-          {tabs.map((tab) => (
+      <nav className="grid grid-cols-3 sm:grid-cols-6 gap-1.5 px-1">
+        {tabs.map((tab) => {
+          const isActive = activeTab === tab.id;
+          return (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as Tab)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all whitespace-nowrap ${
-                activeTab === tab.id 
-                  ? 'bg-indigo-600 text-white shadow-md' 
-                  : 'text-slate-600 hover:bg-slate-100 hover:text-indigo-600'
+              className={`flex flex-col items-center justify-center gap-1.5 p-2.5 rounded-2xl transition-all duration-200 active:scale-95 border ${
+                isActive 
+                  ? 'bg-indigo-600 border-indigo-500 text-white shadow-lg shadow-indigo-100' 
+                  : 'bg-white border-slate-100 text-slate-500 shadow-sm'
               }`}
             >
-              <tab.icon size={18} />
-              {tab.label}
+              <div className={`${isActive ? 'text-white' : 'text-indigo-500'}`}>
+                <tab.icon size={18} strokeWidth={isActive ? 2.5 : 2} />
+              </div>
+              <span className={`text-[8px] font-black uppercase tracking-tighter text-center leading-none ${isActive ? 'text-white' : 'text-slate-600'}`}>
+                {tab.label}
+              </span>
             </button>
-          ))}
-        </nav>
-      </div>
+          );
+        })}
+      </nav>
 
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm min-h-[500px]">
+      <div className="bg-white rounded-[2rem] border border-slate-200 shadow-xl shadow-slate-200/50 min-h-[500px] overflow-hidden">
         {activeTab === 'students' && (
           <StudentsModule course={course} onUpdate={handleUpdateCourse} />
         )}

@@ -20,13 +20,11 @@ export const ActivitiesModule: React.FC<ActivitiesModuleProps> = ({ course, onUp
     maxPoints: 10
   });
   
-  // Estado para la ventana de calificación
   const [gradingActivity, setGradingActivity] = useState<Activity | null>(null);
   const [localGrades, setLocalGrades] = useState<Grade[]>(course.grades);
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
 
-  // Modal State para eliminación
   const [deleteModal, setDeleteModal] = useState<{ isOpen: boolean; activityId: string | null }>({
     isOpen: false,
     activityId: null
@@ -226,9 +224,9 @@ export const ActivitiesModule: React.FC<ActivitiesModuleProps> = ({ course, onUp
                 <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Puntos Totales:</label>
                 <input 
                   type="number" 
-                  className="w-20 px-3 py-1.5 border border-slate-200 rounded-xl text-center font-black text-indigo-600 outline-none"
-                  value={newActivity.maxPoints}
-                  onChange={(e) => setNewActivity({...newActivity, maxPoints: parseInt(e.target.value) || 0})}
+                  className="w-24 px-3 py-2 border border-slate-200 rounded-xl text-center font-black text-indigo-600 outline-none focus:ring-4 focus:ring-indigo-50"
+                  value={newActivity.maxPoints === 0 ? '' : newActivity.maxPoints}
+                  onChange={(e) => setNewActivity({...newActivity, maxPoints: e.target.value === '' ? 0 : parseInt(e.target.value)})}
                 />
               </div>
             )}
@@ -298,7 +296,6 @@ export const ActivitiesModule: React.FC<ActivitiesModuleProps> = ({ course, onUp
         })}
       </div>
 
-      {/* Ventana Modal de Calificación */}
       {gradingActivity && (
         <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300">
           <div className="bg-white w-full max-w-2xl rounded-[2.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 flex flex-col max-h-[90vh]">
@@ -424,11 +421,11 @@ const GradeInput: React.FC<{
         <input 
           type="number"
           inputMode="decimal"
-          className="w-20 px-3 py-3 border-2 border-slate-200 rounded-2xl text-center font-black text-indigo-600 outline-none focus:ring-4 focus:ring-indigo-100 bg-white text-base transition-all"
-          value={value || ''}
+          className="w-28 px-3 py-3 border-2 border-slate-200 rounded-2xl text-center font-black text-indigo-600 outline-none focus:ring-4 focus:ring-indigo-100 bg-white text-lg transition-all"
+          value={value === 0 ? '' : value}
           placeholder="0"
           onChange={(e) => {
-            const val = parseFloat(e.target.value) || 0;
+            const val = e.target.value === '' ? 0 : parseFloat(e.target.value);
             onChange(val);
           }}
         />

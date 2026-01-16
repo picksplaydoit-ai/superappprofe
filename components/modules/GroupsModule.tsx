@@ -9,7 +9,7 @@ interface GroupsModuleProps {
 }
 
 export const GroupsModule: React.FC<GroupsModuleProps> = ({ course, onUpdate }) => {
-  const [teamSize, setTeamSize] = useState(3);
+  const [teamSize, setTeamSize] = useState<number | ''>(3);
   const [localStudents, setLocalStudents] = useState<Student[]>(course.students);
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
@@ -21,10 +21,11 @@ export const GroupsModule: React.FC<GroupsModuleProps> = ({ course, onUpdate }) 
   const sortedStudents = [...localStudents].sort((a, b) => a.name.localeCompare(b.name));
 
   const generateAutoGroups = () => {
+    const size = teamSize === '' ? 1 : teamSize;
     const shuffled = [...localStudents].sort(() => Math.random() - 0.5);
     const updatedStudents = shuffled.map((student, index) => ({
       ...student,
-      teamId: `${Math.floor(index / teamSize) + 1}`
+      teamId: `${Math.floor(index / size) + 1}`
     }));
     setLocalStudents(updatedStudents);
     setSaveSuccess(false);
@@ -75,9 +76,9 @@ export const GroupsModule: React.FC<GroupsModuleProps> = ({ course, onUpdate }) 
               <input 
                 type="number" 
                 inputMode="numeric"
-                className="w-16 px-3 py-2 border border-indigo-200 rounded-xl text-center font-bold text-indigo-600 outline-none"
+                className="w-24 px-3 py-3 border-2 border-indigo-200 rounded-2xl text-center font-black text-indigo-600 outline-none focus:ring-4 focus:ring-indigo-100 text-lg"
                 value={teamSize}
-                onChange={(e) => setTeamSize(parseInt(e.target.value) || 1)}
+                onChange={(e) => setTeamSize(e.target.value === '' ? '' : parseInt(e.target.value))}
               />
             </div>
             <div className="flex gap-2">
@@ -118,7 +119,7 @@ export const GroupsModule: React.FC<GroupsModuleProps> = ({ course, onUpdate }) 
                           type="text"
                           inputMode="text"
                           placeholder="-"
-                          className="w-14 px-2 py-1.5 border border-slate-200 rounded-lg text-center font-black text-indigo-600 outline-none focus:ring-2 focus:ring-indigo-400"
+                          className="w-16 px-2 py-2 border-2 border-slate-100 rounded-lg text-center font-black text-indigo-600 outline-none focus:ring-2 focus:ring-indigo-400"
                           value={student.teamId || ''}
                           onChange={(e) => manualAssign(student.id, e.target.value)}
                         />

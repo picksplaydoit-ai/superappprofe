@@ -16,17 +16,15 @@
         }
         body { 
             font-family: 'Inter', sans-serif; 
-            overscroll-behavior: none; /* Bloquea el pull-to-refresh y el bounce del navegador */
+            overscroll-behavior: none;
             -webkit-tap-highlight-color: transparent;
-            user-select: none; /* Previene selección accidental de texto en la UI */
+            user-select: none;
         }
         
-        /* Permitir selección solo en inputs */
         input, textarea, [contenteditable="true"] {
             user-select: text;
         }
 
-        /* Estilo para el scrollbar en Android */
         ::-webkit-scrollbar {
             width: 4px;
         }
@@ -35,7 +33,6 @@
             border-radius: 10px;
         }
 
-        /* Animaciones fluidas para transiciones entre módulos */
         .page-transition {
             animation: fadeIn 0.3s ease-out;
         }
@@ -44,14 +41,12 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Quitar flechas de inputs numéricos */
         input::-webkit-outer-spin-button,
         input::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
         
-        /* Evitar que el zoom automático de iOS/Android al enfocar un input */
         input[type="text"], input[type="number"], input[type="date"], select, textarea {
             font-size: 16px !important;
         }
@@ -63,7 +58,8 @@
     "react": "https://esm.sh/react@^19.2.3",
     "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
     "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
-    "recharts": "https://esm.sh/recharts@^3.6.0"
+    "recharts": "https://esm.sh/recharts@^3.6.0",
+    "@google/genai": "https://esm.sh/@google/genai@^1.35.0"
   }
 }
 </script>

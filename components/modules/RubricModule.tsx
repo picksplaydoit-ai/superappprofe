@@ -10,8 +10,8 @@ interface RubricModuleProps {
 
 export const RubricModule: React.FC<RubricModuleProps> = ({ course, onUpdate }) => {
   const [items, setItems] = useState<RubricItem[]>(course.rubric.items);
-  const [minAttendance, setMinAttendance] = useState(course.rubric.minAttendance);
-  const [minGrade, setMinGrade] = useState(course.rubric.minGrade);
+  const [minAttendance, setMinAttendance] = useState<number | ''>(course.rubric.minAttendance);
+  const [minGrade, setMinGrade] = useState<number | ''>(course.rubric.minGrade);
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
 
@@ -27,8 +27,9 @@ export const RubricModule: React.FC<RubricModuleProps> = ({ course, onUpdate }) 
     setSaveSuccess(false);
   };
 
-  const updateItem = (id: string, name: string, percentage: number) => {
-    setItems(items.map(i => i.id === id ? { ...i, name, percentage } : i));
+  const updateItem = (id: string, name: string, percentageValue: string) => {
+    const val = percentageValue === '' ? 0 : parseInt(percentageValue);
+    setItems(items.map(i => i.id === id ? { ...i, name, percentage: val } : i));
     setSaveSuccess(false);
   };
 
@@ -37,8 +38,8 @@ export const RubricModule: React.FC<RubricModuleProps> = ({ course, onUpdate }) 
     setTimeout(() => {
       onUpdate({
         rubric: {
-          minAttendance,
-          minGrade,
+          minAttendance: minAttendance === '' ? 0 : minAttendance,
+          minGrade: minGrade === '' ? 0 : minGrade,
           items
         }
       });
@@ -65,10 +66,10 @@ export const RubricModule: React.FC<RubricModuleProps> = ({ course, onUpdate }) 
           <label className="block text-[10px] font-black uppercase text-slate-400 mb-2">Asistencia Mínima (%)</label>
           <input 
             type="number" 
-            className="w-full px-3 py-2 rounded-lg border border-slate-300 outline-none focus:ring-2 focus:ring-indigo-500 font-bold text-indigo-600"
+            className="w-full px-3 py-3 rounded-lg border border-slate-300 outline-none focus:ring-2 focus:ring-indigo-500 font-black text-indigo-600 text-lg text-center"
             value={minAttendance}
             onChange={(e) => {
-              setMinAttendance(parseInt(e.target.value) || 0);
+              setMinAttendance(e.target.value === '' ? '' : parseInt(e.target.value));
               setSaveSuccess(false);
             }}
           />
@@ -77,10 +78,10 @@ export const RubricModule: React.FC<RubricModuleProps> = ({ course, onUpdate }) 
           <label className="block text-[10px] font-black uppercase text-slate-400 mb-2">Nota Aprobatoria</label>
           <input 
             type="number" 
-            className="w-full px-3 py-2 rounded-lg border border-slate-300 outline-none focus:ring-2 focus:ring-indigo-500 font-bold text-indigo-600"
+            className="w-full px-3 py-3 rounded-lg border border-slate-300 outline-none focus:ring-2 focus:ring-indigo-500 font-black text-indigo-600 text-lg text-center"
             value={minGrade}
             onChange={(e) => {
-              setMinGrade(parseInt(e.target.value) || 0);
+              setMinGrade(e.target.value === '' ? '' : parseInt(e.target.value));
               setSaveSuccess(false);
             }}
           />
@@ -88,44 +89,46 @@ export const RubricModule: React.FC<RubricModuleProps> = ({ course, onUpdate }) 
       </div>
 
       <div className="space-y-4 mb-6">
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center px-1">
           <h3 className="font-bold text-slate-700">Criterios de Evaluación</h3>
-          <span className={`text-xs font-black px-2 py-1 rounded-lg ${totalPercentage === 100 ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-500'}`}>
+          <span className={`text-[10px] font-black px-3 py-1.5 rounded-xl uppercase tracking-widest ${totalPercentage === 100 ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-500'}`}>
             TOTAL: {totalPercentage}%
           </span>
         </div>
         
-        {items.map((item) => (
-          <div key={item.id} className="flex gap-4 items-center animate-in fade-in slide-in-from-left-2">
-            <input 
-              type="text" 
-              placeholder="Nombre del rubro (ej. Exámenes)"
-              className="flex-1 px-4 py-2 rounded-lg border border-slate-300 font-medium text-sm"
-              value={item.name}
-              onChange={(e) => updateItem(item.id, e.target.value, item.percentage)}
-            />
-            <div className="w-24 relative">
+        <div className="space-y-3">
+          {items.map((item) => (
+            <div key={item.id} className="flex gap-3 items-center animate-in fade-in slide-in-from-left-2">
               <input 
-                type="number" 
-                placeholder="%"
-                className="w-full px-3 py-2 rounded-lg border border-slate-300 text-right pr-6 font-bold text-indigo-600"
-                value={item.percentage}
-                onChange={(e) => updateItem(item.id, item.name, parseInt(e.target.value) || 0)}
+                type="text" 
+                placeholder="Nombre del rubro (ej. Exámenes)"
+                className="flex-1 px-4 py-3 rounded-2xl border border-slate-200 font-bold text-sm bg-slate-50 focus:bg-white focus:ring-4 focus:ring-indigo-50 outline-none transition-all"
+                value={item.name}
+                onChange={(e) => updateItem(item.id, e.target.value, item.percentage.toString())}
               />
-              <span className="absolute right-2 top-2 text-slate-400 font-bold">%</span>
+              <div className="w-32 relative group">
+                <input 
+                  type="number" 
+                  placeholder="%"
+                  className="w-full px-4 py-3 rounded-2xl border-2 border-slate-200 text-center font-black text-indigo-600 text-lg outline-none focus:border-indigo-400 focus:ring-4 focus:ring-indigo-50 transition-all"
+                  value={item.percentage === 0 ? '' : item.percentage}
+                  onChange={(e) => updateItem(item.id, item.name, e.target.value)}
+                />
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-300 font-black text-sm pointer-events-none">%</span>
+              </div>
+              <button 
+                onClick={() => removeItem(item.id)}
+                className="p-3 text-slate-300 hover:text-red-500 active:scale-90 transition-all bg-slate-50 rounded-2xl border border-slate-100"
+              >
+                <Trash2 size={20} />
+              </button>
             </div>
-            <button 
-              onClick={() => removeItem(item.id)}
-              className="p-2 text-slate-300 hover:text-red-500 transition-colors"
-            >
-              <Trash2 size={20} />
-            </button>
-          </div>
-        ))}
+          ))}
+        </div>
 
         <button 
           onClick={addItem}
-          className="w-full py-3 border-2 border-dashed border-slate-200 rounded-xl text-slate-400 font-bold hover:border-indigo-400 hover:text-indigo-600 hover:bg-indigo-50/30 transition-all flex items-center justify-center gap-2 text-sm"
+          className="w-full py-4 border-2 border-dashed border-slate-200 rounded-[2rem] text-slate-400 font-black uppercase text-[10px] tracking-[0.2em] hover:border-indigo-400 hover:text-indigo-600 hover:bg-indigo-50/30 transition-all flex items-center justify-center gap-2"
         >
           <Plus size={18} />
           Agregar Rubro
@@ -133,8 +136,8 @@ export const RubricModule: React.FC<RubricModuleProps> = ({ course, onUpdate }) 
       </div>
 
       {totalPercentage !== 100 && (
-        <div className="flex items-center gap-2 text-amber-600 bg-amber-50 p-3 rounded-lg text-xs mb-6 border border-amber-100 font-bold">
-          <AlertCircle size={16} />
+        <div className="flex items-center gap-3 text-amber-600 bg-amber-50 p-4 rounded-2xl text-[10px] mb-6 border border-amber-100 font-black uppercase tracking-widest leading-relaxed">
+          <AlertCircle size={18} className="shrink-0" />
           <span>La suma de los porcentajes debe ser exactamente 100%</span>
         </div>
       )}
@@ -142,7 +145,7 @@ export const RubricModule: React.FC<RubricModuleProps> = ({ course, onUpdate }) 
       <button 
         onClick={handleSave}
         disabled={isSaving || totalPercentage !== 100}
-        className={`w-full py-3 rounded-xl font-bold transition-all shadow-lg flex items-center justify-center gap-2 ${
+        className={`w-full py-4 rounded-[1.5rem] font-black uppercase text-[10px] tracking-[0.2em] transition-all shadow-xl flex items-center justify-center gap-2 ${
           saveSuccess 
             ? 'bg-green-500 text-white' 
             : 'bg-indigo-600 text-white hover:bg-indigo-700 disabled:opacity-50 disabled:bg-slate-300 shadow-indigo-100 active:scale-95'

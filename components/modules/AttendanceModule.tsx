@@ -37,18 +37,22 @@ export const AttendanceModule: React.FC<AttendanceModuleProps> = ({ course, onUp
     return a.localeCompare(b);
   });
 
-  const toggleAttendance = (studentId: string) => {
+  const setStatus = (studentId: string, status: AttendanceStatus) => {
     const existingIndex = localAttendance.findIndex(a => a.studentId === studentId && a.date === currentDate);
     let newAttendance = [...localAttendance];
     
     if (existingIndex > -1) {
-      const currentStatus = newAttendance[existingIndex].status;
-      newAttendance[existingIndex].status = currentStatus === 'present' ? 'absent' : 'present';
+      // Si el estado ya es el mismo, lo quitamos (opcional, pero profesional para corrección)
+      if (newAttendance[existingIndex].status === status) {
+        newAttendance.splice(existingIndex, 1);
+      } else {
+        newAttendance[existingIndex].status = status;
+      }
     } else {
       newAttendance.push({
         date: currentDate,
         studentId,
-        status: 'present'
+        status
       });
     }
     setLocalAttendance(newAttendance);
@@ -172,7 +176,7 @@ export const AttendanceModule: React.FC<AttendanceModuleProps> = ({ course, onUp
               <tr>
                 <th className="px-4 py-4 text-[9px] font-black text-slate-400 uppercase tracking-widest text-center w-12">N°</th>
                 <th className="px-4 py-4 text-[9px] font-black text-slate-400 uppercase tracking-widest">Alumno</th>
-                <th className="px-4 py-4 text-[9px] font-black text-slate-400 uppercase tracking-widest text-center">Estado</th>
+                <th className="px-4 py-4 text-[9px] font-black text-slate-400 uppercase tracking-widest text-center">Asistencia / Falta</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 bg-white">
@@ -188,20 +192,26 @@ export const AttendanceModule: React.FC<AttendanceModuleProps> = ({ course, onUp
                       </div>
                     </td>
                     <td className="px-4 py-4">
-                      <div className="flex justify-center">
+                      <div className="flex justify-center gap-3">
                         <button 
-                          onClick={() => toggleAttendance(student.id)}
-                          className={`w-12 h-12 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center transition-all active:scale-90 select-none ${
+                          onClick={() => setStatus(student.id, 'present')}
+                          className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all active:scale-90 select-none border-2 ${
                             status === 'present' 
-                              ? 'bg-green-500 text-white shadow-lg' 
-                              : status === 'absent'
-                              ? 'bg-red-500 text-white shadow-lg'
-                              : 'bg-slate-100 text-slate-300 border border-slate-200'
+                              ? 'bg-green-500 text-white border-green-500 shadow-lg shadow-green-100' 
+                              : 'bg-white text-slate-300 border-slate-100 hover:border-green-200 hover:text-green-500'
                           }`}
                         >
-                          {status === 'present' && <Check size={20} strokeWidth={4} />}
-                          {status === 'absent' && <X size={20} strokeWidth={4} />}
-                          {status === 'unset' && <div className="w-2 h-2 rounded-full bg-slate-300" />}
+                          <Check size={24} strokeWidth={4} />
+                        </button>
+                        <button 
+                          onClick={() => setStatus(student.id, 'absent')}
+                          className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all active:scale-90 select-none border-2 ${
+                            status === 'absent' 
+                              ? 'bg-red-500 text-white border-red-500 shadow-lg shadow-red-100' 
+                              : 'bg-white text-slate-300 border-slate-100 hover:border-red-200 hover:text-red-500'
+                          }`}
+                        >
+                          <X size={24} strokeWidth={4} />
                         </button>
                       </div>
                     </td>
