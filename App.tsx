@@ -1,48 +1,37 @@
 
 import React, { useState, useEffect } from 'react';
-import { Auth } from './components/Auth';
 import { Dashboard } from './components/Dashboard';
 import { CourseView } from './components/CourseView';
 import { Layout } from './components/Layout';
-import { User, Course } from './types';
+import { Course } from './types';
 
 const App: React.FC = () => {
-  const [user, setUser] = useState<User | null>(null);
   const [courses, setCourses] = useState<Course[]>([]);
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
+  const [professorName, setProfessorName] = useState<string>('');
 
-  // Carga inicial
   useEffect(() => {
-    const savedUser = localStorage.getItem('edupro_user');
     const savedCourses = localStorage.getItem('edupro_courses');
-    if (savedUser) setUser(JSON.parse(savedUser));
+    const savedProf = localStorage.getItem('edupro_prof_name');
+    
     if (savedCourses) {
       try {
         setCourses(JSON.parse(savedCourses));
       } catch (e) {
-        console.error("Error cargando cursos", e);
+        console.error("Error loading courses", e);
         setCourses([]);
       }
     }
+    if (savedProf) setProfessorName(savedProf);
   }, []);
 
-  // Persistencia automática
   useEffect(() => {
-    if (courses.length >= 0) {
-      localStorage.setItem('edupro_courses', JSON.stringify(courses));
-    }
+    localStorage.setItem('edupro_courses', JSON.stringify(courses));
   }, [courses]);
 
-  const handleLogin = (u: User) => {
-    setUser(u);
-    localStorage.setItem('edupro_user', JSON.stringify(u));
-  };
-
-  const handleLogout = () => {
-    setUser(null);
-    localStorage.removeItem('edupro_user');
-    setSelectedCourseId(null);
-  };
+  useEffect(() => {
+    localStorage.setItem('edupro_prof_name', professorName);
+  }, [professorName]);
 
   const addCourse = (name: string, groupName: string) => {
     const newCourse: Course = {
@@ -67,19 +56,57 @@ const App: React.FC = () => {
   };
 
   const deleteCourse = (id: string) => {
-    // La confirmación ahora ocurre en el Dashboard vía modal.
     setCourses(prev => prev.filter(c => c.id !== id));
     if (selectedCourseId === id) setSelectedCourseId(null);
   };
 
-  if (!user) {
-    return <Auth onLogin={handleLogin} />;
-  }
+  const exportBackup = () => {
+    const backupData = {
+      courses,
+      professorName,
+      version: "1.2",
+      exportDate: new Date().toISOString()
+    };
+    
+    const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    const dateStr = new Date().toISOString().split('T')[0];
+    
+    link.href = url;
+    link.download = `EduPro_Respaldo_${dateStr}.json`;
+    document.body.appendChild(link);
+    link.click();
+    
+    setTimeout(() => {
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }, 100);
+  };
+
+  const importBackup = (jsonData: string) => {
+    try {
+      const data = JSON.parse(jsonData);
+      if (data.courses && Array.isArray(data.courses)) {
+        setCourses(data.courses);
+        if (data.professorName) setProfessorName(data.professorName);
+        return true;
+      }
+      return false;
+    } catch (e) {
+      console.error("Import error", e);
+      return false;
+    }
+  };
 
   const currentCourse = courses.find(c => c.id === selectedCourseId);
 
   return (
-    <Layout user={user} onLogout={handleLogout} onHome={() => setSelectedCourseId(null)}>
+    <Layout 
+      professorName={professorName} 
+      onProfessorNameChange={setProfessorName}
+      onHome={() => setSelectedCourseId(null)}
+    >
       {currentCourse ? (
         <CourseView 
           course={currentCourse} 
@@ -92,7 +119,9 @@ const App: React.FC = () => {
           onAddCourse={addCourse} 
           onUpdateCourse={updateCourse}
           onDeleteCourse={deleteCourse}
-          onSelectCourse={setSelectedCourseId} 
+          onSelectCourse={setSelectedCourseId}
+          onExportBackup={exportBackup}
+          onImportBackup={importBackup}
         />
       )}
     </Layout>
