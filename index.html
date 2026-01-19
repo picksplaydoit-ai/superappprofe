@@ -8,7 +8,68 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>EduPro Manager</title>
-    <link rel="stylesheet" href="/index.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --safe-top: env(safe-area-inset-top);
+            --safe-bottom: env(safe-area-inset-bottom);
+        }
+        
+        * {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body { 
+            background-color: #f8fafc;
+            color: #020617;
+            margin: 0;
+            padding: 0;
+            overscroll-behavior-y: contain;
+        }
+
+        /* Estilo de Botón Premium Unificado */
+        .btn-action-blue {
+            background-color: #4f46e5 !important;
+            color: #ffffff !important;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 1.25rem 2rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.4);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            transition: transform 0.1s ease;
+        }
+
+        .btn-action-blue:active {
+            transform: scale(0.96);
+            background-color: #3730a3 !important;
+        }
+
+        /* Card Premium Android */
+        .card-android {
+            background: #ffffff;
+            border-radius: 3rem;
+            padding: 2.5rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Reglas de Contraste */
+        .on-dark { color: #ffffff !important; }
+        .on-light { color: #020617 !important; }
+
+        ::-webkit-scrollbar { display: none; }
+    </style>
 <script type="importmap">
 {
   "imports": {
@@ -20,7 +81,7 @@
 }
 </script>
 </head>
-<body class="text-slate-900 overflow-x-hidden">
+<body class="overflow-x-hidden">
     <div id="root"></div>
 </body>
 </html>
