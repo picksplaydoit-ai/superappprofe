@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Home, GraduationCap, Pencil, Check } from 'lucide-react';
 
@@ -20,28 +19,25 @@ export const Layout: React.FC<LayoutProps> = ({ onHome, children, professorName,
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50/50">
-      <header className="bg-indigo-600 text-white shadow-md sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 h-20 flex items-center justify-between">
+      <header>
+        <div className="header-container">
           <div className="flex flex-col">
-            <button onClick={onHome} className="flex items-center gap-2 font-black text-xl tracking-tight active:scale-95 transition-transform text-left">
-              <GraduationCap size={24} />
-              <span className="text-base sm:text-lg">EduPro Manager</span>
+            <button onClick={onHome} className="flex items-center gap-2 font-black text-white text-xl tracking-tight active-scale bg-transparent border-none p-0">
+              <GraduationCap size={28} />
+              <span>EduPro Manager</span>
             </button>
             
-            {/* Sección del Nombre del Profesor */}
             <div className="flex items-center gap-2 mt-0.5 ml-8">
               {isEditing ? (
-                <div className="flex items-center gap-1 bg-indigo-700 rounded-lg px-2 py-1">
+                <div className="flex items-center gap-1">
                   <input 
                     autoFocus
                     type="text"
-                    className="bg-transparent border-none outline-none text-[10px] font-bold text-white w-32 placeholder:text-indigo-300"
-                    placeholder="Tu nombre..."
                     value={tempName}
                     onChange={(e) => setTempName(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleSaveName()}
                   />
-                  <button onClick={handleSaveName} className="text-white hover:text-green-300 transition-colors">
+                  <button onClick={handleSaveName} className="text-white hover:text-indigo-200">
                     <Check size={14} />
                   </button>
                 </div>
@@ -51,21 +47,21 @@ export const Layout: React.FC<LayoutProps> = ({ onHome, children, professorName,
                     setTempName(professorName);
                     setIsEditing(true);
                   }}
-                  className="group flex items-center gap-1.5 text-indigo-100 hover:text-white transition-all active:scale-95"
+                  className="flex items-center gap-1.5 text-indigo-100 hover:text-white transition-all active-scale p-0 bg-transparent border-none"
                 >
-                  <span className="text-[10px] font-black uppercase tracking-widest truncate max-w-[150px]">
+                  <span className="text-[10px] font-black uppercase tracking-widest truncate max-w-[180px]">
                     {professorName ? `Prof. ${professorName}` : 'Configurar Profesor'}
                   </span>
-                  <Pencil size={10} className="opacity-40 group-hover:opacity-100" />
+                  <Pencil size={10} className="opacity-50" />
                 </button>
               )}
             </div>
           </div>
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center">
             <button 
               onClick={onHome}
-              className="p-3 bg-indigo-500/30 hover:bg-indigo-700 rounded-2xl transition-all active:scale-90"
+              className="p-3.5 bg-indigo-500/30 hover:bg-indigo-700 rounded-2xl transition-all active-scale text-white"
               title="Inicio"
             >
               <Home size={22} />

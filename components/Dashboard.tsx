@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { Course } from '../types';
 import { 
@@ -227,27 +226,20 @@ export const Dashboard: React.FC<DashboardProps> = ({
         <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-600/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-violet-600/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl" />
         
-        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="max-w-md text-center md:text-left">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-indigo-500/20 rounded-full text-indigo-300 text-[10px] font-black uppercase tracking-widest mb-4">
+        <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10">
+          <div className="max-w-md text-center lg:text-left">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-indigo-500/20 rounded-full text-indigo-300 text-[10px] font-black uppercase tracking-widest mb-4 border border-indigo-500/20">
               <HardDrive size={12} />
-              Centro de Respaldo y Seguridad
+              Centro de Respaldo
             </div>
             <h2 className="text-2xl font-black mb-3">Tus datos te pertenecen.</h2>
             <p className="text-indigo-200/60 text-sm font-bold leading-relaxed">
-              EduPro funciona de forma 100% local. Para asegurar tu información, te recomendamos descargar un respaldo periódicamente o antes de cambiar de dispositivo.
+              EduPro funciona de forma 100% local. Recomendamos descargar un respaldo periódicamente.
             </p>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-            <button 
-              onClick={onExportBackup}
-              className="flex items-center justify-center gap-3 bg-white text-slate-900 px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-indigo-50 transition-all active:scale-95 shadow-xl"
-            >
-              <Download size={20} />
-              Exportar Respaldo
-            </button>
-            
+            {/* INPUT REAL OCULTO */}
             <input 
               type="file" 
               accept=".json" 
@@ -255,13 +247,21 @@ export const Dashboard: React.FC<DashboardProps> = ({
               ref={fileInputRef} 
               onChange={handleFileChange}
             />
+
+            <button 
+              onClick={onExportBackup}
+              className="flex-1 sm:w-56 flex items-center justify-center gap-3 bg-white text-slate-900 px-6 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-indigo-50 transition-all active:scale-95 shadow-xl"
+            >
+              <Download size={20} />
+              Exportar
+            </button>
             
             <button 
               onClick={() => fileInputRef.current?.click()}
-              className="flex items-center justify-center gap-3 bg-indigo-600 text-white px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-indigo-700 transition-all active:scale-95 shadow-xl shadow-indigo-900/40"
+              className="flex-1 sm:w-56 flex items-center justify-center gap-3 bg-indigo-600 text-white px-6 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-indigo-700 transition-all active:scale-95 shadow-xl shadow-indigo-900/40"
             >
               <Upload size={20} />
-              Importar Datos
+              Importar
             </button>
           </div>
         </div>
@@ -272,7 +272,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
           }`}>
             {importStatus === 'success' ? <ShieldCheck size={20}/> : <AlertCircle size={20}/>}
             <span className="text-[10px] font-black uppercase tracking-widest">
-              {importStatus === 'success' ? 'Base de datos restaurada con éxito' : 'Error: El archivo no es un respaldo válido de EduPro'}
+              {importStatus === 'success' ? 'Base de datos restaurada con éxito' : 'Error: El archivo no es un respaldo válido'}
             </span>
           </div>
         )}
@@ -304,22 +304,11 @@ export const Dashboard: React.FC<DashboardProps> = ({
               </div>
 
               <p>
-                Todos los datos (cursos, alumnos, asistencias y calificaciones) 
-                se guardan únicamente en el dispositivo del usuario.
+                Todos los datos se guardan únicamente en el dispositivo del usuario.
               </p>
 
               <p className="bg-slate-50 p-4 rounded-xl border border-slate-100 text-slate-500">
                 EduPro Manager no utiliza servidores externos ni envía datos a internet.
-              </p>
-
-              <p>
-                El usuario es responsable de respaldar su información mediante la función 
-                de exportación disponible en la aplicación.
-              </p>
-
-              <p className="text-red-500/70 text-xs">
-                Si no estás de acuerdo con esta política, puedes dejar de usar la aplicación 
-                eliminándola del dispositivo.
               </p>
 
               <div className="pt-6 border-t border-slate-50 flex justify-between items-center">

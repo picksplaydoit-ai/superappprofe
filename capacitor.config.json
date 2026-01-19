@@ -2,7 +2,8 @@
 {
   "appId": "com.edupro.manager",
   "appName": "EduPro Manager",
-  "webDir": "dist",
+  "webDir": ".",
+  "bundledWebRuntime": false,
   "server": {
     "androidScheme": "https",
     "allowNavigation": []
