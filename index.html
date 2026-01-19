@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,66 +10,60 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>EduPro Manager</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #4f46e5;
-            --safe-top: env(safe-area-inset-top);
-            --safe-bottom: env(safe-area-inset-bottom);
+            --primary-indigo: #4f46e5;
         }
-        
         * {
             -webkit-tap-highlight-color: transparent;
             -webkit-touch-callout: none;
             outline: none;
-            font-family: 'Inter', sans-serif;
         }
-
         body { 
-            background-color: #f8fafc;
-            color: #020617;
-            margin: 0;
-            padding: 0;
+            font-family: 'Inter', sans-serif; 
             overscroll-behavior-y: contain;
+            user-select: none;
+            scrollbar-width: none;
+            background-color: #f8fafc;
+        }
+        
+        ::-webkit-scrollbar {
+            display: none;
         }
 
-        /* Estilo de Botón Premium Unificado */
-        .btn-action-blue {
-            background-color: #4f46e5 !important;
-            color: #ffffff !important;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            padding: 1.25rem 2rem;
-            border-radius: 1.5rem;
-            box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.4);
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-            transition: transform 0.1s ease;
+        input, textarea, [contenteditable="true"] {
+            user-select: text;
         }
 
-        .btn-action-blue:active {
-            transform: scale(0.96);
-            background-color: #3730a3 !important;
+        .active-scale {
+            transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .active-scale:active {
+            transform: scale(0.95);
+            opacity: 0.9;
         }
 
-        /* Card Premium Android */
-        .card-android {
-            background: #ffffff;
-            border-radius: 3rem;
-            padding: 2.5rem;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        /* Estilo de "Vidrio" para Android */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
-        /* Reglas de Contraste */
-        .on-dark { color: #ffffff !important; }
-        .on-light { color: #020617 !important; }
-
-        ::-webkit-scrollbar { display: none; }
+        .tab-active {
+            position: relative;
+        }
+        .tab-active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 20%;
+            right: 20%;
+            height: 4px;
+            background: white;
+            border-radius: 10px;
+        }
     </style>
 <script type="importmap">
 {
@@ -81,7 +76,7 @@
 }
 </script>
 </head>
-<body class="overflow-x-hidden">
+<body class="text-slate-900 overflow-x-hidden">
     <div id="root"></div>
 </body>
 </html>
