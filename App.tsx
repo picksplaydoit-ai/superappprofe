@@ -4,33 +4,26 @@ import { Dashboard } from './components/Dashboard';
 import { CourseView } from './components/CourseView';
 import { Layout } from './components/Layout';
 import { Course } from './types';
+import { storage } from './services/storage';
 
-const App: React.FC = () => {
+export const App: React.FC = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
   const [professorName, setProfessorName] = useState<string>('');
 
   useEffect(() => {
-    const savedCourses = localStorage.getItem('edupro_courses');
-    const savedProf = localStorage.getItem('edupro_prof_name');
-    
-    if (savedCourses) {
-      try {
-        setCourses(JSON.parse(savedCourses));
-      } catch (e) {
-        console.error("Error loading courses", e);
-        setCourses([]);
-      }
-    }
-    if (savedProf) setProfessorName(savedProf);
+    const savedCourses = storage.get<Course[]>('edupro_courses', []);
+    const savedProf = storage.get<string>('edupro_prof_name', '');
+    setCourses(savedCourses);
+    setProfessorName(savedProf);
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('edupro_courses', JSON.stringify(courses));
+    storage.set('edupro_courses', courses);
   }, [courses]);
 
   useEffect(() => {
-    localStorage.setItem('edupro_prof_name', professorName);
+    storage.set('edupro_prof_name', professorName);
   }, [professorName]);
 
   const addCourse = (name: string, groupName: string) => {
@@ -75,6 +68,7 @@ const App: React.FC = () => {
     
     link.href = url;
     link.download = `EduPro_Respaldo_${dateStr}.json`;
+    link.style.display = 'none';
     document.body.appendChild(link);
     link.click();
     
@@ -127,5 +121,3 @@ const App: React.FC = () => {
     </Layout>
   );
 };
-
-export default App;
