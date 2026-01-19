@@ -4,7 +4,10 @@
   "version": "1.0.0",
   "description": "Sistema profesional de gestión educativa para Android",
   "main": "index.tsx",
+  "type": "module",
   "scripts": {
+    "start": "npx serve .",
+    "dev": "npx serve .",
     "cap:sync": "cap sync",
     "cap:open": "cap open android"
   },
@@ -13,10 +16,10 @@
     "@capacitor/core": "^6.0.0",
     "lucide-react": "^0.562.0",
     "react": "^19.2.3",
-    "react-dom": "^19.2.3",
-    "recharts": "^3.6.0"
+    "react-dom": "^19.2.3"
   },
   "devDependencies": {
-    "@capacitor/cli": "^6.0.0"
+    "@capacitor/cli": "^6.0.0",
+    "typescript": "^5.0.0"
   }
 }

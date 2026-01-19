@@ -6,7 +6,5 @@
   "background_color": "#f8fafc",
   "display": "standalone",
   "orientation": "portrait",
-  "requestFramePermissions": [
-    "camera"
-  ]
+  "requestFramePermissions": []
 }

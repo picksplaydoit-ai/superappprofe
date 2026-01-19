@@ -1,3 +1,3 @@
 
-// Este archivo ha sido desactivado por requerimiento del usuario.
+// Este módulo ha sido eliminado permanentemente de la aplicación para mayor privacidad y ligereza.
 export const AIAssistantModule = () => null;
